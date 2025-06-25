@@ -5,34 +5,35 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-// test git
+// 线程同步机制类封装
 
+// 信号量类
 class sem
 {
 public:
-    sem()
+    sem() // 构造函数
     {
         if (sem_init(&m_sem, 0, 0) != 0)
         {
             throw std::exception();
         }
     }
-    sem(int num)
+    sem(int num) // 构造函数，创建的时候带初始化值
     {
         if (sem_init(&m_sem, 0, num) != 0)
         {
             throw std::exception();
         }
     }
-    ~sem()
+    ~sem() // 析构函数
     {
         sem_destroy(&m_sem);
     }
-    bool wait()
+    bool wait() // 等待信号量
     {
         return sem_wait(&m_sem) == 0;
     }
-    bool post()
+    bool post() // 增加信号量
     {
         return sem_post(&m_sem) == 0;
     }
@@ -70,6 +71,8 @@ public:
 private:
     pthread_mutex_t m_mutex;
 };
+
+// 条件变量类
 class cond
 {
 public:
